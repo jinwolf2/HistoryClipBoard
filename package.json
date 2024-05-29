@@ -20,6 +20,8 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.0",
     "@electron-toolkit/utils": "^3.0.0",
+    "axios": "^1.6.8",
+    "cheerio": "^1.0.0-rc.12",
     "electron-is-dev": "^3.0.1",
     "electron-updater": "^6.1.7",
     "react-icons": "^5.1.0"

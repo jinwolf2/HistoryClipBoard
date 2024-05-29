@@ -1,14 +1,16 @@
-import { contextBridge, ipcRenderer } from 'electron'
+const { contextBridge, ipcRenderer } = require('electron');
 
-const api = {
-  send: (channel, data) => ipcRenderer.send(channel, data),
-  receive: (channel, func) => {
-    ipcRenderer.on(channel, (event, ...args) => func(...args))
-  },
-  once: (channel, func) => {
-    ipcRenderer.once(channel, (event, ...args) => func(...args))
-  }
-}
-
-contextBridge.exposeInMainWorld('electronAPI', api)
-
+contextBridge.exposeInMainWorld('electronAPI', {
+    send: (channel, data) => {
+        const validChannels = ['copy-to-clipboard', 'copy-image-to-clipboard', 'copy-files-to-clipboard'];
+        if (validChannels.includes(channel)) {
+            ipcRenderer.send(channel, data);
+        }
+    },
+    receive: (channel, func) => {
+        const validChannels = ['clipboard-change', 'clipboard-image', 'clipboard-files', 'clipboard-file'];
+        if (validChannels.includes(channel)) {
+            ipcRenderer.on(channel, (event, ...args) => func(...args));
+        }
+    }
+});
